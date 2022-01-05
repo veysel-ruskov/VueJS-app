@@ -2,10 +2,10 @@
   <div>
     <div class="cards_container">
       <div v-for="el in data" :key="el.id" class="cards">
-        <img class="imgCard" :src="el.images[0].src" alt="Image" />
-        <h3 class="cardName">{{ el.name }}</h3>
+        <img class="imgCard" :srcset="el.images[0].srcset" alt="Image" />
+        <p class="cardName">{{ el.name }}</p>
         <p class="cardDescr" v-if="el.description != ''">{{ el.description }}</p>
-        <p class="cardCategorie" v-for="categrie in el.categories" :key="categrie.id">{{categrie.name}}</p>
+        <p class="cardCategorie" v-for="categrie in el.categories" :key="categrie.id">{{ categrie.name }}</p>
         <Btn class="btn_add_to_cart"></Btn>
       </div>
     </div>
@@ -44,9 +44,9 @@ export default {
   margin-top: 60px;
 }
 .imgCard {
-  width: 230px;
+  width: 100%;
   height: 300px;
-  border-radius: 7%;
+  border-radius: 20px;
 }
 .cards_container {
   display: flex;
@@ -56,23 +56,39 @@ export default {
   margin: 0 auto;
 }
 .cards {
-  max-width: calc(100vw/6);
+  width: calc(100%/6 - 10px);
+  height: 430px;
+  flex-basis: calc(100%/6 - 10px);  
+  margin-bottom: 15px;
 }
 .btn_add_to_cart {
-  display: none;
+  visibility: hidden;
 }
 .cards:hover {
-  border: 2px solid ;
-  border-color: red;
+    transition: .2s;
+    border-radius: 20px;
+    box-shadow: 0px 3px 15px #9e9e9e;
 }
 .cards:hover .cardCategorie{
   display: none;
 }
 .cards:hover .btn_add_to_cart {
-  display: block;
+  visibility: visible;
 }
 .imgCard:hover{
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+.cardCategorie {
+  height: 5px;
+  font-size: 11px;
+  color: grey;
+  line-height: 0px;
+}
+.cardName {
+  color: grey;
+  font-size: 18px;
+  margin-top: 16px !important;
+
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
-  <div class="btn_add_to_cart">
+    <div class="btn_add_to_cart">
       <p class="btn_text">Add to cart</p>
   </div>
+
 </template>
 
 <script>
@@ -12,13 +13,15 @@ export default {
 
 <style scoped>
 .btn_add_to_cart {
-    background-color: blueviolet;
-    width: 9%;
-    height: 5%;
-    border-radius: 0%;
-    font-size: 20px;
-    cursor: pointer;
-    margin: auto;
-    border: 0px;
+    width: 79%;
+    border-radius: 50px;
+    text-align: center;
+    margin: 0 auto;
+    font-weight: 500;
+    padding: 2px 20px 2px;
+    font-size: 16px;
+    color: #fff;
+    background: linear-gradient( 
+90deg,#f45c05 0%,#3726a6 100%);
 }
 </style>
