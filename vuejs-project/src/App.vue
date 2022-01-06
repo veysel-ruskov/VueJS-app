@@ -48,8 +48,8 @@ export default {
 
   },
    beforeMount(){
-
-    //this.load_pages()
+    //to do if (scroll = 80%) run function
+    this.load_pages()
  },
 };
 </script>
