@@ -1,5 +1,5 @@
 <template>
-    <a href="https://greet.bg/?add-to-cart=" class="btn_add_to_cart">
+    <a class="btn_add_to_cart">
       <p>Add to cart</p>
     </a>
 </template>

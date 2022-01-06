@@ -6,7 +6,7 @@
         <p class="cardName">{{ el.name }}</p>
         <p class="cardDescr" v-if="el.description != ''">{{ el.description }}</p>
         <p class="cardCategorie" v-for="categrie in el.categories" :key="categrie.id">{{ categrie.name }}</p>
-        <Btn class="btn_add_to_cart"></Btn>
+        <Btn :href="'https://greet.bg/?add-to-cart=' + el.id"></Btn>
       </div>
     </div>
   </div>
@@ -14,11 +14,12 @@
 
 <script>
 import Btn from "./components/add_to_cart_btn.vue"
+
 export default {
   name: "App",
   data() {
     return {
-      data: [],
+      data:[],
     };
   },
   components: {
@@ -31,6 +32,25 @@ export default {
     this.data = await response.json()
     console.log(this.data)
   },
+  methods: {
+
+    load_pages: async function(numPages = 10) {
+    let i=2;
+    while(i < numPages){
+    var response = await fetch('https://greet.bg/wp-json/wc/store/products?page='+ i)
+    var dataRes = await response.json()
+    i++;
+    for (let i = 0; i < dataRes.length; i++) {
+    this.data.push(dataRes[i])
+    }
+  }   
+}
+
+  },
+   beforeMount(){
+
+    //this.load_pages()
+ },
 };
 </script>
 
