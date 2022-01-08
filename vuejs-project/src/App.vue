@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- FILTERS -->
     <div class="dropdown">
       <div class="categorieDropdown">
         <label for="Categries">Categroies:</label>
@@ -8,14 +9,15 @@
         </select>
       </div>
       <div class="price_nameDropdown">
-        <label for="price_names">Filter by:</label>
+        <label for="price_names">Order by:</label>
         <select>
           <!-- sort by -->
           <option value="name">Name</option>
-          <option value="price">Pame</option>
+          <option value="price">Price</option>
         </select>
       </div>
     </div>
+    <!-- CARDS -->
     <div class="cards_container">
       <div v-for="el in data" :key="el.id" class="cards">
         <img class="imgCard" :srcset="el.images[0].srcset" alt="Image" />
@@ -38,7 +40,7 @@
 
 <script>
 import Btn from "./components/add_to_cart_btn.vue";
-
+let startPage = 2;
 export default {
   name: "App",
   data() {
@@ -57,23 +59,33 @@ export default {
     console.log(this.data);
   },
   methods: {
-    load_pages: async function (numPages = 10) {
-      let i = 2;
-      while (i < numPages) {
+    load_pages: async function () {
         var response = await fetch(
-          "https://greet.bg/wp-json/wc/store/products?page=" + i
+          "https://greet.bg/wp-json/wc/store/products?page=" + startPage
         );
         var dataRes = await response.json();
-        i++;
+        
         for (let i = 0; i < dataRes.length; i++) {
           this.data.push(dataRes[i]);
         }
-      }
+        startPage++
+      
+    },
+    pages: function () {
+      window.addEventListener("scroll", () => {
+        console.log("scrolled", window.scrollY);
+        console.log(window.innerHeight);
+        if (
+          window.scrollY + window.innerHeight >=
+          document.documentElement.scrollHeight
+        ) {
+          this.load_pages();
+        }
+      });
     },
   },
-  beforeMount() {
-    //to do if (scroll = 80%) run function
-    this.load_pages();
+  mounted() {
+    this.pages();
   },
 };
 </script>
@@ -134,12 +146,10 @@ export default {
   font-size: 18px;
   margin-top: 16px !important;
 }
-.categorieDropdown {
-
+/* .categorieDropdown {
 }
 .price_nameDropdown {
-
-}
+} */
 .dropdown {
   display: flex;
   justify-content: space-between;
