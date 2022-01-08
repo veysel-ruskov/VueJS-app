@@ -4,14 +4,18 @@
     <div class="dropdown">
       <div class="categorieDropdown">
         <label for="Categries">Categroies:</label>
-        <select>
-          <!-- options -->
+        <select v-model="selectedType">
+          <!-- <option value="default">All categories</option> -->
+          <option v-for="categorieDrop in filter_category" :key="categorieDrop">
+            {{ categorieDrop }}
+          </option>
         </select>
       </div>
       <div class="price_nameDropdown">
         <label for="price_names">Order by:</label>
         <select>
           <!-- sort by -->
+          <option value="default">None</option>
           <option value="name">Name</option>
           <option value="price">Price</option>
         </select>
@@ -46,6 +50,8 @@ export default {
   data() {
     return {
       data: [],
+      selectedType: '',
+      filter_category: [],
     };
   },
   components: {
@@ -55,26 +61,26 @@ export default {
     var response = await fetch(
       "https://greet.bg/wp-json/wc/store/products?page=1"
     );
-    this.data = await response.json();
-    console.log(this.data);
+    this.data = await response.json()
+    this.category_list()
+
   },
   methods: {
     load_pages: async function () {
-        var response = await fetch(
-          "https://greet.bg/wp-json/wc/store/products?page=" + startPage
-        );
-        var dataRes = await response.json();
-        
-        for (let i = 0; i < dataRes.length; i++) {
-          this.data.push(dataRes[i]);
-        }
-        startPage++
-      
+      var response = await fetch(
+        "https://greet.bg/wp-json/wc/store/products?page=" + startPage
+      );
+      var dataRes = await response.json();
+
+      for (let i = 0; i < dataRes.length; i++) {
+        this.data.push(dataRes[i]);
+      }
+      startPage++;
+      this.category_list()
+
     },
     pages: function () {
       window.addEventListener("scroll", () => {
-        console.log("scrolled", window.scrollY);
-        console.log(window.innerHeight);
         if (
           window.scrollY + window.innerHeight >=
           document.documentElement.scrollHeight
@@ -83,9 +89,25 @@ export default {
         }
       });
     },
+    category_list: function() {
+      for (let i = 0; i < this.data.length; i++) {
+      for (let j = 0; j < this.data[i].categories.length; j++) {
+        if(!this.filter_category.includes(this.data[i].categories[j].name)){
+          this.filter_category.push(this.data[i].categories[j].name)
+        }
+      }
+    }
+    },
+    selectedCategorieFiltering: function() { 
+
+// if (categori == data.categori) { display } 
+      
+      
+    },
   },
   mounted() {
-    this.pages();
+    this.pages();    
+    this.selectedCategorieFiltering()
   },
 };
 </script>
