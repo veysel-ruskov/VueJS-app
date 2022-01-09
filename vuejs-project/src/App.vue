@@ -2,19 +2,20 @@
   <div class="container">
     <!-- FILTERS -->
     <div class="dropdown">
+      <!-- Categroies dropdown -->
       <div class="categorieDropdown">
         <label for="Categries">Categroies:</label>
         <select v-model="selectedType">
-          <!-- <option value="default">All categories</option> -->
           <option v-for="categorieDrop in filter_category" :key="categorieDrop">
             {{ categorieDrop }}
           </option>
         </select>
       </div>
+      <!-- Order by dropdown -->
       <div class="price_nameDropdown">
         <label for="price_names">Order by:</label>
         <select>
-          <!-- sort by -->
+          <!-- sort by ........ || v-for sort-option & data() sort: {name,price}-->
           <option value="default">None</option>
           <option value="name">Name</option>
           <option value="price">Price</option>
@@ -50,7 +51,7 @@ export default {
   data() {
     return {
       data: [],
-      selectedType: '',
+      selectedType: "",
       filter_category: [],
     };
   },
@@ -61,9 +62,8 @@ export default {
     var response = await fetch(
       "https://greet.bg/wp-json/wc/store/products?page=1"
     );
-    this.data = await response.json()
-    this.category_list()
-
+    this.data = await response.json();
+    this.category_list();
   },
   methods: {
     load_pages: async function () {
@@ -76,8 +76,7 @@ export default {
         this.data.push(dataRes[i]);
       }
       startPage++;
-      this.category_list()
-
+      this.category_list();
     },
     pages: function () {
       window.addEventListener("scroll", () => {
@@ -89,25 +88,22 @@ export default {
         }
       });
     },
-    category_list: function() {
+    category_list: function () {
       for (let i = 0; i < this.data.length; i++) {
-      for (let j = 0; j < this.data[i].categories.length; j++) {
-        if(!this.filter_category.includes(this.data[i].categories[j].name)){
-          this.filter_category.push(this.data[i].categories[j].name)
+        for (let j = 0; j < this.data[i].categories.length; j++) {
+          if (!this.filter_category.includes(this.data[i].categories[j].name)) {
+            this.filter_category.push(this.data[i].categories[j].name);
+          }
         }
       }
-    }
     },
-    selectedCategorieFiltering: function() { 
-
-// if (categori == data.categori) { display } 
-      
-      
+    selectedCategorieFiltering: function () {
+      // if (selectedCategorie == data.categori) { display } ? || watch () { selectedCategorie} ?
     },
   },
   mounted() {
-    this.pages();    
-    this.selectedCategorieFiltering()
+    this.pages();
+    this.selectedCategorieFiltering();
   },
 };
 </script>
