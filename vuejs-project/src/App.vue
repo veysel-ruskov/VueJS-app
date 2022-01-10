@@ -137,11 +137,14 @@ export default {
       })
       }
     },
-    price_list: function () {
-      if(this.selectedOrder == 'Price'){
-      this.data.prices.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-      }
-    },
+    
+    // price_list: function () {
+    //   if(this.selectedOrder == 'Price'){
+    //     for (let i = 0; i < this.data.length; i++) {
+    //     this.data[i].prices.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    //     }
+    //   }
+    // },
   },
 beforeUpdate () {
     this.name_list();
