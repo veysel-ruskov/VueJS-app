@@ -137,11 +137,11 @@ export default {
       })
       }
     },
-    // price_list: function () {
-    //   if(this.selectedOrder == 'Price'){
-    //   this.data.prices.sort((a, b) => parseInt(a.price) - parseInt(b.price));
-    //   }
-    // },
+    price_list: function () {
+      if(this.selectedOrder == 'Price'){
+      this.data.prices.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+      }
+    },
   },
 beforeUpdate () {
     this.name_list();
