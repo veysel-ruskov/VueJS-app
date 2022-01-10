@@ -17,8 +17,8 @@
       <div class="price_nameDropdown">
         <label for="price_names">Order by:</label>
         <select v-model="selectedOrder">
-          <option value="None">None</option>
           <option v-for="order in order_by" :key="order">{{order}}</option>
+          <span>{{selectedOrder}}</span>
         </select>
       </div>
     </div>
@@ -45,7 +45,7 @@
       </div>
     </div>
     <!-- Selected categorie -->
-    <div class="cards_container">
+    <div v-else class="cards_container">
       <div v-for="el in data" :key="el.id" class="cards">
         <div v-for="filter in el.categories" :key="filter.name">
           <div v-if="filter.name == selectedType">
@@ -86,11 +86,13 @@ export default {
   components: {
     Btn,
   },
+  // Load 1st page
   async created() {
     var response = await fetch(
       "https://greet.bg/wp-json/wc/store/products?page=1"
     );
     this.data = await response.json();
+    console.log(this.data)
     this.category_list();
   },
   methods: {
@@ -106,14 +108,13 @@ export default {
       }
       startPage++;
       this.category_list();
+
     },
     // Check scroll
-    pages: function () {
+    pages: async function () {
       window.addEventListener("scroll", () => {
-        if (
-          window.scrollY + window.innerHeight >=
-          document.documentElement.scrollHeight
-        ) {
+        if(window.scrollY+window.innerHeight>=
+          document.documentElement.scrollHeight) {
           this.load_pages();
         }
       });
@@ -128,15 +129,23 @@ export default {
         }
       }
     },
+    // Sort by name
+    name_list: function () {
+      if(this.selectedOrder == 'Name'){
+      this.data.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      })
+      }
+    },
+    // price_list: function () {
+    //   if(this.selectedOrder == 'Price'){
+    //   this.data.prices.sort((a, b) => parseInt(a.price) - parseInt(b.price));
+    //   }
+    // },
   },
-  // ??
-  computed: {
-  // orderedUsers: function () {
-  //   return this.data.orderBy(this.data, 'name')
-  // },
-  // orderedPrices: function () {
-  //   return this.data.orderBy(this, 'price')
-  // },
+beforeUpdate () {
+    this.name_list();
+    // this.price_list();
 },
   mounted() {
     this.pages();
