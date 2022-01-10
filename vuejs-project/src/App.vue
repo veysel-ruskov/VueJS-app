@@ -6,24 +6,28 @@
       <div class="categorieDropdown">
         <label for="Categries">Categroies:</label>
         <select v-model="selectedType">
+          <option value="All categroies">All categroies</option>
           <option v-for="categorieDrop in filter_category" :key="categorieDrop">
             {{ categorieDrop }}
           </option>
+          <span>{{ selectedType }}</span>
         </select>
       </div>
       <!-- Order by dropdown -->
       <div class="price_nameDropdown">
         <label for="price_names">Order by:</label>
-        <select>
-          <!-- sort by ........ || v-for sort-option & data() sort: {name,price}-->
-          <option value="default">None</option>
-          <option value="name">Name</option>
-          <option value="price">Price</option>
+        <select v-model="selectedOrder">
+          <option value="None">None</option>
+          <option v-for="order in order_by" :key="order">{{order}}</option>
         </select>
       </div>
     </div>
     <!-- CARDS -->
-    <div class="cards_container">
+    <!-- All Categories -->
+    <div
+      v-if="selectedType == 'All categroies' || selectedType == ''"
+      class="cards_container"
+    >
       <div v-for="el in data" :key="el.id" class="cards">
         <img class="imgCard" :srcset="el.images[0].srcset" alt="Image" />
         <p class="cardName">{{ el.name }}</p>
@@ -40,6 +44,28 @@
         <Btn :href="'https://greet.bg/?add-to-cart=' + el.id"></Btn>
       </div>
     </div>
+    <!-- Selected categorie -->
+    <div class="cards_container">
+      <div v-for="el in data" :key="el.id" class="cards">
+        <div v-for="filter in el.categories" :key="filter.name">
+          <div v-if="filter.name == selectedType">
+            <img class="imgCard" :srcset="el.images[0].srcset" alt="Image" />
+            <p class="cardName">{{ el.name }}</p>
+            <p class="cardDescr" v-if="el.description != ''">
+              {{ el.description }}
+            </p>
+            <p
+              class="cardCategorie"
+              v-for="categrie in el.categories"
+              :key="categrie.id"
+            >
+              {{ categrie.name }}
+            </p>
+            <Btn :href="'https://greet.bg/?add-to-cart=' + el.id"></Btn>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,6 +79,8 @@ export default {
       data: [],
       selectedType: "",
       filter_category: [],
+      order_by: ['Name', 'Price'],
+      selectedOrder: '',
     };
   },
   components: {
@@ -66,6 +94,7 @@ export default {
     this.category_list();
   },
   methods: {
+    // Load pages if scroll hit bottom
     load_pages: async function () {
       var response = await fetch(
         "https://greet.bg/wp-json/wc/store/products?page=" + startPage
@@ -78,6 +107,7 @@ export default {
       startPage++;
       this.category_list();
     },
+    // Check scroll
     pages: function () {
       window.addEventListener("scroll", () => {
         if (
@@ -88,6 +118,7 @@ export default {
         }
       });
     },
+    // Categories dynamically populated, based on the results, loaded.
     category_list: function () {
       for (let i = 0; i < this.data.length; i++) {
         for (let j = 0; j < this.data[i].categories.length; j++) {
@@ -97,13 +128,18 @@ export default {
         }
       }
     },
-    selectedCategorieFiltering: function () {
-      // if (selectedCategorie == data.categori) { display } ? || watch () { selectedCategorie} ?
-    },
   },
+  // ??
+  computed: {
+  // orderedUsers: function () {
+  //   return this.data.orderBy(this.data, 'name')
+  // },
+  // orderedPrices: function () {
+  //   return this.data.orderBy(this, 'price')
+  // },
+},
   mounted() {
     this.pages();
-    this.selectedCategorieFiltering();
   },
 };
 </script>
