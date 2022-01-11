@@ -24,40 +24,34 @@
     </div>
     <!-- CARDS -->
     <!-- All Categories -->
-    <div
-      v-if="selectedType == 'All categroies' || selectedType == ''"
-      
-    >
-    <div>
+    <div v-if="selectedType == 'All categroies' || selectedType == ''">
       <div>
-     
-        <div class="cards_container">
-      <div v-for="el in data" :key="el.id" class="cards">
-        <img class="imgCard" :srcset="el.images[0].srcset" alt="Image" />
-        <p class="cardName">{{ el.name }}</p>
-        <p class="cardDescr" v-if="el.description != ''">
-          {{ el.description }}
-        </p>
-        <p
-          class="cardCategorie"
-          v-for="categrie in el.categories"
-          :key="categrie.id"
-        >
-          {{ categrie.name }}
-        </p>
-        <Btn :href="'https://greet.bg/?add-to-cart=' + el.id"></Btn>
-
-      </div>
-      </div>
-      </div>
+        <div>
+          <div class="cards_container">
+            <div v-for="el in data" :key="el.id" class="cards">
+              <img class="imgCard" :srcset="el.images[0].srcset" alt="Image" />
+              <p class="cardName">{{ el.name }}</p>
+              <p class="cardDescr" v-if="el.description != ''">
+                {{ el.description }}
+              </p>
+              <p
+                class="cardCategorie"
+                v-for="categrie in el.categories"
+                :key="categrie.id"
+              >
+                {{ categrie.name }}
+              </p>
+              <Btn :href="'https://greet.bg/?add-to-cart=' + el.id"></Btn>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- Selected categorie -->
     <div v-else class="cards_container">
       <div v-for="el in data" :key="el.id">
         <div v-for="filter in el.categories" :key="filter.name">
-          <div v-if="filter.name == selectedType" >
-            
+          <div v-if="filter.name == selectedType">
             <div class="cards">
               <img class="imgCard" :srcset="el.images[0].srcset" alt="Image" />
               <p class="cardName">{{ el.name }}</p>
@@ -113,7 +107,7 @@ export default {
         "https://greet.bg/wp-json/wc/store/products?page=" + startPage
       );
       var dataRes = await response.json();
-      
+
       for (let i = 0; i < dataRes.length; i++) {
         this.data.push(dataRes[i]);
       }
@@ -149,7 +143,7 @@ export default {
         });
       }
     },
-    
+
     // price_list: function () {
     //   if(this.selectedOrder == 'Price'){
     //     arr = this.data.prices
