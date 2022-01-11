@@ -83,6 +83,7 @@
 <script>
 import Btn from "./components/add_to_cart_btn.vue";
 let startPage = 2;
+// let arr = [];
 export default {
   name: "App",
   data() {
@@ -103,7 +104,6 @@ export default {
       "https://greet.bg/wp-json/wc/store/products?page=1"
     );
     this.data = await response.json();
-    console.log(this.data);
     this.category_list();
   },
   methods: {
@@ -113,7 +113,7 @@ export default {
         "https://greet.bg/wp-json/wc/store/products?page=" + startPage
       );
       var dataRes = await response.json();
-
+      
       for (let i = 0; i < dataRes.length; i++) {
         this.data.push(dataRes[i]);
       }
@@ -149,12 +149,13 @@ export default {
         });
       }
     },
-
+    
     // price_list: function () {
     //   if(this.selectedOrder == 'Price'){
-    //     for (let i = 0; i < this.data.length; i++) {
-    //     this.data[i].prices.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-    //     }
+    //     arr = this.data.prices
+    //     arr.sort((a, b) => {
+    //       return parseFloat(a.price) - parseFloat(b.price)
+    //     })
     //   }
     // },
   },
