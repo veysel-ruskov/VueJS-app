@@ -17,8 +17,8 @@
       <div class="price_nameDropdown">
         <label for="price_names">Order by:</label>
         <select v-model="selectedOrder">
-          <option v-for="order in order_by" :key="order">{{order}}</option>
-          <span>{{selectedOrder}}</span>
+          <option v-for="order in order_by" :key="order">{{ order }}</option>
+          <span>{{ selectedOrder }}</span>
         </select>
       </div>
     </div>
@@ -26,8 +26,12 @@
     <!-- All Categories -->
     <div
       v-if="selectedType == 'All categroies' || selectedType == ''"
-      class="cards_container"
+      
     >
+    <div>
+      <div>
+     
+        <div class="cards_container">
       <div v-for="el in data" :key="el.id" class="cards">
         <img class="imgCard" :srcset="el.images[0].srcset" alt="Image" />
         <p class="cardName">{{ el.name }}</p>
@@ -42,26 +46,33 @@
           {{ categrie.name }}
         </p>
         <Btn :href="'https://greet.bg/?add-to-cart=' + el.id"></Btn>
+
+      </div>
+      </div>
+      </div>
       </div>
     </div>
     <!-- Selected categorie -->
     <div v-else class="cards_container">
-      <div v-for="el in data" :key="el.id" class="cards">
+      <div v-for="el in data" :key="el.id">
         <div v-for="filter in el.categories" :key="filter.name">
-          <div v-if="filter.name == selectedType">
-            <img class="imgCard" :srcset="el.images[0].srcset" alt="Image" />
-            <p class="cardName">{{ el.name }}</p>
-            <p class="cardDescr" v-if="el.description != ''">
-              {{ el.description }}
-            </p>
-            <p
-              class="cardCategorie"
-              v-for="categrie in el.categories"
-              :key="categrie.id"
-            >
-              {{ categrie.name }}
-            </p>
-            <Btn :href="'https://greet.bg/?add-to-cart=' + el.id"></Btn>
+          <div v-if="filter.name == selectedType" >
+            
+            <div class="cards">
+              <img class="imgCard" :srcset="el.images[0].srcset" alt="Image" />
+              <p class="cardName">{{ el.name }}</p>
+              <p class="cardDescr" v-if="el.description != ''">
+                {{ el.description }}
+              </p>
+              <p
+                class="cardCategorie"
+                v-for="categrie in el.categories"
+                :key="categrie.id"
+              >
+                {{ categrie.name }}
+              </p>
+              <Btn :href="'https://greet.bg/?add-to-cart=' + el.id"></Btn>
+            </div>
           </div>
         </div>
       </div>
@@ -79,8 +90,8 @@ export default {
       data: [],
       selectedType: "",
       filter_category: [],
-      order_by: ['Name', 'Price'],
-      selectedOrder: '',
+      order_by: ["Name", "Price"],
+      selectedOrder: "",
     };
   },
   components: {
@@ -92,7 +103,7 @@ export default {
       "https://greet.bg/wp-json/wc/store/products?page=1"
     );
     this.data = await response.json();
-    console.log(this.data)
+    console.log(this.data);
     this.category_list();
   },
   methods: {
@@ -108,13 +119,14 @@ export default {
       }
       startPage++;
       this.category_list();
-
     },
     // Check scroll
     pages: async function () {
       window.addEventListener("scroll", () => {
-        if(window.scrollY+window.innerHeight>=
-          document.documentElement.scrollHeight) {
+        if (
+          window.scrollY + window.innerHeight >=
+          document.documentElement.scrollHeight
+        ) {
           this.load_pages();
         }
       });
@@ -131,13 +143,13 @@ export default {
     },
     // Sort by name
     name_list: function () {
-      if(this.selectedOrder == 'Name'){
-      this.data.sort((a, b) => {
-        return a.name.localeCompare(b.name);
-      })
+      if (this.selectedOrder == "Name") {
+        this.data.sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
       }
     },
-    
+
     // price_list: function () {
     //   if(this.selectedOrder == 'Price'){
     //     for (let i = 0; i < this.data.length; i++) {
@@ -146,10 +158,10 @@ export default {
     //   }
     // },
   },
-beforeUpdate () {
+  beforeUpdate() {
     this.name_list();
     // this.price_list();
-},
+  },
   mounted() {
     this.pages();
   },
@@ -173,14 +185,13 @@ beforeUpdate () {
 .cards_container {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-around;
-  max-width: 100vw;
+  justify-content: space-between;
   margin: 0 auto;
 }
 .cards {
-  width: calc(100% / 6 - 10px);
+  width: 300px;
   height: 430px;
-  flex-basis: calc(100% / 6 - 10px);
+  flex-basis: calc(100% / 5 - 10px);
   margin-bottom: 15px;
 }
 .btn_add_to_cart {
@@ -220,4 +231,10 @@ beforeUpdate () {
   display: flex;
   justify-content: space-between;
 }
+/* .cards2{
+    height: 430px;
+    width: 250px;
+  margin-bottom: 15px;
+
+} */
 </style>
