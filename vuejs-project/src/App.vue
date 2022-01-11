@@ -186,7 +186,6 @@ export default {
 .cards {
   width: 300px;
   height: 430px;
-  flex-basis: calc(100% / 5 - 10px);
   margin-bottom: 15px;
 }
 .btn_add_to_cart {
